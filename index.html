@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html ng-app="crewApp">
+    <head>
+        <title>Crew App</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href=bower_components/bootstrap/dist/css/bootstrap.min.css>
+        <link rel="stylesheet" href="app/styles/css/myStyle.css">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row" ng-controller="crewCtrl">
+                <main class="col-md-5 col-sm-5 col-xs-11 ">
+                    <div class="page-header">
+                      <h1>Possible New Crew Members</h1>  
+                    </div>
+                    <form>
+                        <div class="form-group">
+                            <input class="form-control text-muted" placeholder="Filter Members..." ng-model="searchMember">
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" size="15" 
+                                    id="myselection"
+                                    multiple ng-multiple="true" 
+                                    ng-model="selectedCrew" 
+                                    ng-options="selectedMember.Text | limitTo: 40  
+                                    for selectedMember in possibleCrew
+                                    | filter: searchMember">
+                            </select> 
+                             <p class="text-muted"><i>Please, hold Ctrl/Command key to select multiple.</i></p>
+                        </div>
+                        <button type="submit" class="btn btn-primary"
+                                ng-click="addToCurrentCrew(selectedCrew)"
+                                ng-if="selectedCrew.length">
+                            Add New Crew Member/s
+                        </button>
+                    </form>
+                </main>
+
+                <aside class="col-md-6 col-sm-6 col-xs-12 col-md-offset-1">
+                    <div class="page-header">
+                        <h1>NCC Over 9000 Crew Manifest
+                        <span class="pull-right"
+                             ng-if="currentCrew.length">
+                        <button type="button" class="btn btn-primary"
+                                ng-click="clearCurrentCrew()">
+                            Clear All
+                        </button>
+                    </span>
+                        </h1>
+                        
+                    </div>
+                    <div>
+                    <ul class="crew-manifest">
+                        <li class="clearfix"
+                            ng-repeat="member in currentCrew">
+                            <span>
+                               <img class="img-thumbnail"
+                                 ng-src="{{member.Icon.URL}}"
+                                 alt="{{member.Text | limitTo : 15}}
+                                 {{member.Text.length > 15 ? '...' : ''}}"> 
+                            </span>
+                            <p>{{member.Text}}</p>
+                        </li>
+                    </ul>
+                    </div>
+                </aside>
+            </div> 
+        </div>
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script>
+                                var crewApp = angular.module('crewApp', ['ngRoute']);
+
+                                crewApp.constant('crewUrl', 'http://api.duckduckgo.com/?q=star+trek+deep+space+nine+characters&format=json&pretty=1');
+
+                                crewApp.factory('crewService', function ($http, crewUrl) {
+                                    return  {
+                                        showAll: function () {
+                                            return $http.get(crewUrl);
+                                        },
+                                    };
+                                });
+
+                                crewApp.controller('crewCtrl', function ($scope, crewService)
+                                {
+                                    $scope.currentCrew = [];
+                                    $scope.possibleCrew = [];
+
+                                    $scope.addToCurrentCrew = function (selectedCrew) {
+                                        angular.forEach(selectedCrew, function (member) {
+                                            $scope.currentCrew.push(member);
+                                            var memberId = $scope.possibleCrew.indexOf(member);
+                                            $scope.possibleCrew.splice(memberId, 1);
+                                        });
+                                        $scope.selectedCrew = [];
+                                    }
+
+                                    $scope.clearCurrentCrew = function () {
+                                        $scope.currentCrew = [];
+                                        $scope.selectedCrew = [];
+                                        $scope.getPosibleCrew();
+                                    }
+
+                                    $scope.getPosibleCrew = function () {
+                                        var crew = crewService.showAll();
+                                        crew.success(function (data) {
+                                            $scope.possibleCrew = data.RelatedTopics;
+                                        });
+                                        crew.error(function (error) {
+                                            $scope.error = error;
+                                        });
+                                    }
+                                    $scope.getPosibleCrew();
+                                });
+
+        </script>
+    </body>
+</html>
