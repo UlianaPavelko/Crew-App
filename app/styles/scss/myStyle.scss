@@ -1,0 +1,46 @@
+$mainTextColor: #337ab7;
+$secondaryTextColor: #666;
+$backgroundColor: #fafafa;
+
+body{
+    background: $backgroundColor; 
+    color: $secondaryTextColor;
+    font-weight: 200;
+  h1{
+      color: $mainTextColor;
+      color: $mainTextColor;
+      font-weight: 200;
+  }
+  
+}
+.crew-manifest{
+    padding: 0;
+    li{
+     list-style: none; 
+     margin: 0 0 20px 0;
+    } 
+    img{
+        width: 15%;
+        height: 15%;
+        float: left;
+    }
+    p{
+        float: right;
+        width: 80%;
+        margin-left: 5%;
+        font-size: 16px;
+    }
+}
+form{
+    .form-control{
+        color: $secondaryTextColor;
+        margin-bottom: 20px;
+    }
+    select{
+        option{
+            margin-bottom: 5px;
+            font-weight: 200;
+            font-size: 16px;
+        }
+    }
+}

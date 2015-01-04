@@ -1,0 +1,33 @@
+body {
+  background: #fafafa;
+  color: #666;
+  font-weight: 200; }
+  body h1 {
+    color: #337ab7;
+    color: #337ab7;
+    font-weight: 200; }
+
+.crew-manifest {
+  padding: 0; }
+  .crew-manifest li {
+    list-style: none;
+    margin: 0 0 20px 0; }
+  .crew-manifest img {
+    width: 15%;
+    height: 15%;
+    float: left; }
+  .crew-manifest p {
+    float: right;
+    width: 80%;
+    margin-left: 5%;
+    font-size: 16px; }
+
+form .form-control {
+  color: #666;
+  margin-bottom: 20px; }
+form select option {
+  margin-bottom: 5px;
+  font-weight: 200;
+  font-size: 16px; }
+
+/*# sourceMappingURL=myStyle.css.map */
